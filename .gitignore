@@ -52,3 +52,5 @@ key.properties
 
 # Coverage
 coverage/
+key.properties
+*.jks
