@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'data/family_repository.dart';
 import 'screens/home_screen.dart';
@@ -20,9 +21,9 @@ class FamilyTreeApp extends StatelessWidget {
       // The whole app is Persian-first and right-to-left.
       locale: const Locale('fa', 'IR'),
       localizationsDelegates: const [
-        DefaultMaterialLocalizations.delegate,
-        DefaultWidgetsLocalizations.delegate,
-        DefaultCupertinoLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [Locale('fa', 'IR')],
       builder: (context, child) {
