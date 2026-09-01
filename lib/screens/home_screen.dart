@@ -49,15 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
           children: [
-            Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.asset(
-                  'assets/images/header.png',
-                  width: 220,
-                  fit: BoxFit.cover,
-                ),
-              ),
+            const Center(
+              child: Text('🌳', style: TextStyle(fontSize: 44)),
             ),
             const SizedBox(height: 8),
             Center(

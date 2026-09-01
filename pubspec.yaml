@@ -24,5 +24,3 @@ flutter:
 
   assets:
     - assets/data/family.json
-    - assets/images/header.png
-    - assets/images/poster.jpg
