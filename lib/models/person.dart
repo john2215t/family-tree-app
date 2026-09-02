@@ -61,12 +61,17 @@ class Person {
   /// specified in the source data.
   final PersonStatus status;
 
+  /// محل دفن (burial place) — only meaningful for deceased/martyr people.
+  /// Empty string means "not recorded"; the UI hides it in that case.
+  final String burialPlace;
+
   const Person({
     required this.id,
     required this.firstName,
     required this.lastName,
     this.birthYear,
     this.status = PersonStatus.alive,
+    this.burialPlace = '',
   });
 
   factory Person.fromJson(Map<String, dynamic> json) {
@@ -76,6 +81,7 @@ class Person {
       lastName: json['lastName'] as String,
       birthYear: json['birthYear'] as int?,
       status: PersonStatus.fromJson(json['status'] as String?),
+      burialPlace: json['burialPlace'] as String? ?? '',
     );
   }
 

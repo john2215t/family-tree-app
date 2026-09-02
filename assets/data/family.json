@@ -455,7 +455,8 @@
       "firstName": "جلال",
       "lastName": "رفسنجانی",
       "birthYear": null,
-      "status": "martyr"
+      "status": "martyr",
+      "burialPlace": ""
     },
     {
       "id": "p66",
@@ -1113,7 +1114,8 @@
       "firstName": "ماشاءاله",
       "lastName": "",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p160",
@@ -1316,7 +1318,8 @@
       "firstName": "حاج محمد علی‌اکبر",
       "lastName": "محمد علی‌اکبر",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p189",
@@ -1666,14 +1669,16 @@
       "firstName": "علی",
       "lastName": "رفسنجانی",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p239",
       "firstName": "فاطمه",
       "lastName": "پورحسینی",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p240",
@@ -1701,7 +1706,8 @@
       "firstName": "حسن",
       "lastName": "رفسنجانی",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p244",
@@ -1764,7 +1770,8 @@
       "firstName": "عباس",
       "lastName": "رفسنجانی",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p253",
@@ -1806,14 +1813,16 @@
       "firstName": "رضا",
       "lastName": "رفسنجانی",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p259",
       "firstName": "طلعت",
       "lastName": "",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p260",
@@ -1855,14 +1864,16 @@
       "firstName": "ابراهیم",
       "lastName": "رفسنجانی",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p266",
       "firstName": "طوبا",
       "lastName": "",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p267",
@@ -1925,7 +1936,8 @@
       "firstName": "حسین",
       "lastName": "رفسنجانی",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p276",
@@ -2002,14 +2014,16 @@
       "firstName": "معصومه",
       "lastName": "رفسنجانی",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p287",
       "firstName": "یوسف",
       "lastName": "",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p288",
@@ -2030,14 +2044,16 @@
       "firstName": "فاطمه",
       "lastName": "رفسنجانی",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p291",
       "firstName": "رجب",
       "lastName": "",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p292",
@@ -2807,14 +2823,16 @@
       "firstName": "خدیجه",
       "lastName": "رفسنجانی",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p402",
       "firstName": "علی‌ اکبر",
       "lastName": "",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p403",
@@ -2828,21 +2846,24 @@
       "firstName": "گرسوم",
       "lastName": "رفسنجانی",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p405",
       "firstName": "رضا",
       "lastName": "",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p406",
       "firstName": "شهیداکبر",
       "lastName": "اکبر",
       "birthYear": null,
-      "status": "martyr"
+      "status": "martyr",
+      "burialPlace": ""
     },
     {
       "id": "p407",
@@ -2856,42 +2877,48 @@
       "firstName": "حسین",
       "lastName": "",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p409",
       "firstName": "معصومه",
       "lastName": "",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p410",
       "firstName": "سکینه",
       "lastName": "رفسنجانی",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p411",
       "firstName": "حاج محمدرضا",
       "lastName": "محمدرضا",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p412",
       "firstName": "یوسف",
       "lastName": "رفسنجانی",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     },
     {
       "id": "p413",
       "firstName": "شهربانو",
       "lastName": "",
       "birthYear": null,
-      "status": "deceased"
+      "status": "deceased",
+      "burialPlace": ""
     }
   ],
   "families": {

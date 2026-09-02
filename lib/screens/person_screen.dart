@@ -6,12 +6,14 @@ import '../theme/app_theme.dart';
 import '../widgets/person_card.dart';
 import '../widgets/status_dot.dart';
 import 'family_screen.dart';
+import 'person_list_screen.dart';
+import 'person_screen.dart';
+import 'tree_screen.dart';
 
-/// Full-information screen for a single person: name, birth year, spouse,
-/// parents, and children — plus, when relevant, a link to jump to the
-/// family in which this person was born ("مشاهده در خانواده اصلی"),
-/// which matters most when this person is being viewed as someone else's
-/// spouse (an in-law) rather than as a child of the family on screen.
+/// Full-information screen for a single person: name, birth year, status,
+/// burial place, spouse, parents, children, paternal lineage (پدر،
+/// پدربزرگ، … تا سرسلسله), tappable descendant-generation counts, and —
+/// via the 🌳 app-bar action — the full tree view rooted at this person.
 class PersonScreen extends StatelessWidget {
   final FamilyRepository repository;
   final String personId;
@@ -26,9 +28,27 @@ class PersonScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final relations = repository.relationsFor(personId);
     final person = relations.person;
+    final lineageText = repository.paternalLineageText(personId);
+    final genCounts = _ownFamilyGenerationCounts(personId);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('اطلاعات فرد')),
+      appBar: AppBar(
+        title: const Text('اطلاعات فرد'),
+        actions: [
+          IconButton(
+            tooltip: 'نمای درختی از این فرد',
+            icon: const Text('🌳', style: TextStyle(fontSize: 20)),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) =>
+                      TreeScreen(repository: repository, rootPersonId: personId),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
@@ -44,6 +64,7 @@ class PersonScreen extends StatelessWidget {
                   const SizedBox(height: 14),
                   Text(
                     person.fullName,
+                    textAlign: TextAlign.center,
                     style: Theme.of(context)
                         .textTheme
                         .headlineSmall
@@ -60,10 +81,66 @@ class PersonScreen extends StatelessWidget {
                   ],
                   const SizedBox(height: 8),
                   _StatusChip(status: person.status),
+                  if (person.status != PersonStatus.alive &&
+                      person.burialPlace.isNotEmpty) ...[
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.place_rounded,
+                            size: 16, color: AppTheme.textSecondary),
+                        const SizedBox(width: 4),
+                        Text(
+                          'محل دفن: ${person.burialPlace}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(color: AppTheme.textSecondary),
+                        ),
+                      ],
+                    ),
+                  ],
                 ],
               ),
             ),
-            const SizedBox(height: 28),
+            // Paternal lineage: پدر › پدربزرگ › … › سرسلسله
+            if (lineageText.isNotEmpty) ...[
+              const SizedBox(height: 24),
+              _SectionTitle('سلسله پدری'),
+              const SizedBox(height: 8),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.family_restroom_rounded,
+                          size: 18, color: AppTheme.primary),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          lineageText,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(color: AppTheme.textSecondary),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+            // Descendant generations (فرزند / نوه / نتیجه / نبیره / ندیده)
+            // relative to this person's own family — tappable.
+            if (genCounts.isNotEmpty) ...[
+              const SizedBox(height: 22),
+              _PersonGenerationStats(
+                repository: repository,
+                personId: personId,
+                counts: genCounts,
+              ),
+            ],
+            const SizedBox(height: 24),
             if (relations.spouse != null) ...[
               _SectionTitle('همسر'),
               const SizedBox(height: 10),
@@ -88,6 +165,8 @@ class PersonScreen extends StatelessWidget {
                           child: NameWithStatus(
                             status: relations.parents!.husband.status,
                             child: Text(
+                              // Parents keep the full name (نام + نام خانوادگی)
+                              // per the family-name display rule.
                               relations.parents!.displayName,
                               style: Theme.of(context)
                                   .textTheme
@@ -136,6 +215,15 @@ class PersonScreen extends StatelessWidget {
     );
   }
 
+  /// Generation counts relative to the person's own family (the one they
+  /// started as a spouse). Empty when the person has no family of their
+  /// own — in that case there are no descendants to count.
+  List<int> _ownFamilyGenerationCounts(String personId) {
+    final ownFamily = repository.findOwnFamily(personId);
+    if (ownFamily == null) return const [];
+    return repository.descendantGenerationCounts(ownFamily.id);
+  }
+
   void _openPerson(BuildContext context, String id) {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -149,6 +237,93 @@ class PersonScreen extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => FamilyScreen(repository: repository, path: path),
+      ),
+    );
+  }
+}
+
+/// Tappable generation counts shown on the person profile: فرزند / نوه /
+/// نتیجه / نبیره / ندیده — each count opens the member list of that
+/// generation (same behavior as the family screen's stats).
+class _PersonGenerationStats extends StatelessWidget {
+  final FamilyRepository repository;
+  final String personId;
+  final List<int> counts;
+
+  const _PersonGenerationStats({
+    required this.repository,
+    required this.personId,
+    required this.counts,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final labels = FamilyRepository.descendantGenerationLabels;
+    final ownFamilyId = repository.findOwnFamily(personId)!.id;
+
+    final entries = <MapEntry<int, int>>[];
+    for (var i = 0; i < labels.length; i++) {
+      if (i == 0 || counts[i] > 0) {
+        entries.add(MapEntry(i, counts[i]));
+      }
+    }
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 18,
+          runSpacing: 10,
+          children: [
+            for (final e in entries)
+              InkWell(
+                borderRadius: BorderRadius.circular(10),
+                onTap: e.value == 0
+                    ? null
+                    : () {
+                        final people = repository
+                            .descendantGenerationPeople(ownFamilyId)[e.key];
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => PersonListScreen(
+                              repository: repository,
+                              title: '${labels[e.key]}های ${repository
+                                      .getPerson(personId)!.firstName}',
+                              people: people,
+                            ),
+                          ),
+                        );
+                      },
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '${e.value}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.w800,
+                              color: AppTheme.primary,
+                            ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        'تعداد ${labels[e.key]}',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppTheme.textSecondary,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

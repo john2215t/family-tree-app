@@ -7,6 +7,7 @@ import '../theme/app_theme.dart';
 import '../widgets/breadcrumb.dart';
 import '../widgets/family_card.dart';
 import '../widgets/status_dot.dart';
+import 'person_list_screen.dart';
 import 'person_screen.dart';
 import 'tree_screen.dart';
 
@@ -237,7 +238,8 @@ class _NameLink extends StatelessWidget {
 /// Shows this family's own descendant counts by generation: تعداد فرزند
 /// (children), نوه (grandchildren), نتیجه (great-grandchildren), نبیره
 /// (great-great-grandchildren) and ندیده (great-great-great-grandchildren),
-/// all counted relative to this specific couple.
+/// all counted relative to this specific couple. Tapping any count opens
+/// the list of people in that generation.
 class _FamilyStats extends StatelessWidget {
   final FamilyRepository repository;
   final String familyId;
@@ -247,14 +249,14 @@ class _FamilyStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final counts = repository.descendantGenerationCounts(familyId);
-    const labels = ['فرزند', 'نوه', 'نتیجه', 'نبیره', 'ندیده'];
+    final labels = FamilyRepository.descendantGenerationLabels;
 
     // Only show generations that have at least one member, but always show
     // "فرزند" even if zero so the requested child-count is always visible.
-    final entries = <MapEntry<String, int>>[];
+    final entries = <MapEntry<int, int>>[];
     for (var i = 0; i < labels.length; i++) {
       if (i == 0 || counts[i] > 0) {
-        entries.add(MapEntry(labels[i], counts[i]));
+        entries.add(MapEntry(i, counts[i]));
       }
     }
 
@@ -267,24 +269,50 @@ class _FamilyStats extends StatelessWidget {
           runSpacing: 10,
           children: [
             for (final e in entries)
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    '${e.value}',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: AppTheme.primary,
-                        ),
+              InkWell(
+                borderRadius: BorderRadius.circular(10),
+                onTap: e.value == 0
+                    ? null
+                    : () {
+                        final people = repository
+                            .descendantGenerationPeople(familyId)[e.key];
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => PersonListScreen(
+                              repository: repository,
+                              title:
+                                  '${labels[e.key]}های این خانواده',
+                              people: people,
+                            ),
+                          ),
+                        );
+                      },
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '${e.value}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.w800,
+                              color: AppTheme.primary,
+                            ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        'تعداد ${labels[e.key]}',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppTheme.textSecondary,
+                            ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    'تعداد ${e.key}',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppTheme.textSecondary,
-                        ),
-                  ),
-                ],
+                ),
               ),
           ],
         ),

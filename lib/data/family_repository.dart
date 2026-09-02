@@ -71,6 +71,18 @@ class FamilyRepository {
 
   Family? getFamily(String id) => _familiesById[id];
 
+  /// All people in the clan, in stored order (used for status-filtered
+  /// lists on the home screen).
+  List<Person> get allPeople => _peopleById.values.toList(growable: false);
+
+  /// All people with the given life status, sorted by full name.
+  List<Person> peopleWithStatus(PersonStatus status) {
+    final result =
+        _peopleById.values.where((p) => p.status == status).toList()
+          ..sort((a, b) => a.fullName.compareTo(b.fullName));
+    return result;
+  }
+
   /// Resolves a [Family] into a display-ready [CoupleUnit]. Returns null
   /// if the family or husband cannot be found (defensive against bad data).
   CoupleUnit? resolveCouple(String familyId) {
@@ -167,6 +179,46 @@ class FamilyRepository {
     return path;
   }
 
+  /// Builds the paternal lineage chain of [personId]: the father, paternal
+  /// grandfather, paternal great-grandfather, … up to the founding
+  /// ancestor (سرسلسله). Each entry is a [Person]; the chain is returned
+  /// nearest-first (پدر اول، بعد پدربزرگ، …). Empty for the founding
+  /// ancestor himself.
+  ///
+  /// The walk follows each generation's *birth family* (where the person
+  /// is recorded as a child) and takes its husband as the paternal
+  /// ancestor — matching the patrilineal convention used throughout the
+  /// app. A visited-set guards against cycles in malformed data.
+  List<Person> paternalLineage(String personId) {
+    final chain = <Person>[];
+    final visited = <String>{personId};
+    String? currentId = personId;
+    while (currentId != null) {
+      final birthFamily = findBirthFamily(currentId);
+      if (birthFamily == null) break;
+      final father = _peopleById[birthFamily.husbandId];
+      if (father == null || !visited.add(father.id)) break;
+      chain.add(father);
+      currentId = father.id;
+    }
+    return chain;
+  }
+
+  /// One-line rendering of [paternalLineage], e.g.
+  /// «محمد رفسنجانی › علی رفسنجانی › یوسف رفسنجانی (سرسلسله)».
+  /// Returns an empty string for the founding ancestor.
+  String paternalLineageText(String personId) {
+    final chain = paternalLineage(personId);
+    if (chain.isEmpty) return '';
+    final names = [
+      for (var i = 0; i < chain.length; i++)
+        i == chain.length - 1
+            ? '${chain[i].fullName} (سرسلسله)'
+            : chain[i].fullName,
+    ];
+    return names.join(' › ');
+  }
+
   // ---- Search -----------------------------------------------------------
 
   /// Searches people by first name, last name, or full name (case- and
@@ -226,4 +278,40 @@ class FamilyRepository {
     }
     return counts;
   }
+
+  /// Returns the people of each descendant generation of [familyId] as
+  /// resolved [Person] lists (index 0 = children, 1 = نوه, 2 = نتیجه,
+  /// 3 = نبیره, 4 = ندیده) — the list-based counterpart of
+  /// [descendantGenerationCounts], used to open a member list when the
+  /// user taps a generation count.
+  List<List<Person>> descendantGenerationPeople(String familyId) {
+    const generationLabels = 5;
+    final generations = List<List<Person>>.generate(
+        generationLabels, (_) => <Person>[], growable: false);
+    List<Person> currentGeneration = childrenOf(familyId);
+    for (var gen = 0; gen < generationLabels; gen++) {
+      generations[gen] = List.of(currentGeneration);
+      if (currentGeneration.isEmpty) break;
+      final nextGeneration = <Person>[];
+      for (final person in currentGeneration) {
+        final ownFamily = findOwnFamily(person.id);
+        if (ownFamily != null) {
+          nextGeneration.addAll(childrenOf(ownFamily.id));
+        }
+      }
+      currentGeneration = nextGeneration;
+    }
+    return generations;
+  }
+
+  /// Persian labels for descendant generations, shared by the family and
+  /// person screens. Index 0 = فرزند, 1 = نوه, 2 = نتیجه, 3 = نبیره,
+  /// 4 = ندیده.
+  static const descendantGenerationLabels = [
+    'فرزند',
+    'نوه',
+    'نتیجه',
+    'نبیره',
+    'ندیده',
+  ];
 }
