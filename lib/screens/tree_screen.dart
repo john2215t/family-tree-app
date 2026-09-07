@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../data/family_repository.dart';
-import '../theme/app_theme.dart';
 import '../models/person.dart';
+import '../models/relationship.dart';
+import '../theme/app_theme.dart';
+import '../widgets/status_dot.dart';
 import 'family_screen.dart';
 
 /// A zoomable, pannable full-tree overview, built with [InteractiveViewer].

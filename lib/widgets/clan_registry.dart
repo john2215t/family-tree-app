@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/family_repository.dart';
-import 'person_screen.dart';
+import '../screens/person_screen.dart';
 
 /// App-wide registry of all loaded clans (main + side clans), looked up by
 /// [FamilyRepository.clanKey]. Provided above [HomeScreen]; screens use
