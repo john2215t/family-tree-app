@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:family_tree_flutter/data/family_repository.dart';
-import 'package:family_tree_flutter/models/person.dart';
+import 'package:shajirenameh/data/family_repository.dart';
+import 'package:shajirenameh/models/person.dart';
 
 /// A small self-contained sample dataset used only for testing, deliberately
 /// shaped like the real data: a founding couple, a child who married an
