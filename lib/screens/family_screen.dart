@@ -66,7 +66,12 @@ class FamilyScreen extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => TreeScreen(repository: repository),
+                  builder: (_) => TreeScreen(
+                    repository: repository,
+                    // Root the tree at the family being viewed, not the
+                    // clan root — so each family's tree opens on itself.
+                    rootPersonId: couple.husband.id,
+                  ),
                 ),
               );
             },

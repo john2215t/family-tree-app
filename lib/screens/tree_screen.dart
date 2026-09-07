@@ -31,10 +31,18 @@ class TreeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Root family: the root person's own family if given, else the clan root.
+    // If the person has no own family (a leaf), root the tree at their
+    // birth family instead — so their personal subtree still centers on
+    // them rather than jumping back to the clan's founding couple.
     String rootFamilyId = repository.rootFamilyId;
     if (rootPersonId != null) {
       final ownFamily = repository.findOwnFamily(rootPersonId!);
-      if (ownFamily != null) rootFamilyId = ownFamily.id;
+      if (ownFamily != null) {
+        rootFamilyId = ownFamily.id;
+      } else {
+        final birthFamily = repository.findBirthFamily(rootPersonId!);
+        if (birthFamily != null) rootFamilyId = birthFamily.id;
+      }
     }
 
     final rootCouple = repository.resolveCouple(rootFamilyId);
