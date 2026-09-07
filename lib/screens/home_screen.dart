@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/family_repository.dart';
+import '../widgets/clan_registry.dart';
 import '../models/person.dart';
 import '../theme/app_theme.dart';
 import '../widgets/person_card.dart';
@@ -122,6 +123,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         // Show the paternal lineage under each search hit.
                         repository: repo,
                         onTap: () {
+                          final ref = repo.crossRefFor(person.id);
+                          if (ref != null) {
+                            openCrossClanFamily(context, ref);
+                            return;
+                          }
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => PersonScreen(

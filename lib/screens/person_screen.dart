@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/family_repository.dart';
+import '../widgets/clan_registry.dart';
 import '../models/person.dart';
 import '../theme/app_theme.dart';
 import '../widgets/person_card.dart';
@@ -225,6 +226,12 @@ class PersonScreen extends StatelessWidget {
   }
 
   void _openPerson(BuildContext context, String id) {
+    // Cross-clan spouse: open the other clan's family page.
+    final ref = repository.crossRefFor(id);
+    if (ref != null) {
+      openCrossClanFamily(context, ref);
+      return;
+    }
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => PersonScreen(repository: repository, personId: id),

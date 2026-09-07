@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/family_repository.dart';
+import '../widgets/clan_registry.dart';
 import '../models/person.dart';
 import '../models/relationship.dart';
 import '../theme/app_theme.dart';
@@ -121,11 +122,9 @@ class FamilyScreen extends StatelessWidget {
                     for (final childCouple in children) ...[
                       FamilyCard(
                         couple: childCouple,
+                        repository: repository,
                         onTap: () => _onChildTap(context, childCouple),
                         onOpenPerson: (id) {
-                          // Opening a spouse from the children list: show
-                          // their own detail screen in this clan. Cross-clan
-                          // navigation is disabled (clans are separate).
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => PersonScreen(
@@ -219,6 +218,13 @@ class _CoupleHeader extends StatelessWidget {
   }
 
   void _openPerson(BuildContext context, String personId) {
+    // Same real person recorded in another خاندان (cross-clan marriage):
+    // open the other clan's family page instead of this clan's profile.
+    final ref = repository.crossRefFor(personId);
+    if (ref != null) {
+      openCrossClanFamily(context, ref);
+      return;
+    }
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => PersonScreen(repository: repository, personId: personId),

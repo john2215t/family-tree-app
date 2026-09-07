@@ -28,12 +28,17 @@ class FamilyRepository {
   /// or the side clan's file stem).
   final String clanKey;
 
+  /// Maps a person id of this clan to the same real person in another clan
+  /// (see [CrossClanRef]) — used for cross-clan spouse navigation.
+  final Map<String, CrossClanRef> crossRefs;
+
   FamilyRepository._({
     required this.title,
     required this.rootFamilyId,
     required Map<String, Person> peopleById,
     required Map<String, Family> familiesById,
     this.clanKey = 'main',
+    this.crossRefs = const {},
   })  : _peopleById = peopleById,
         _familiesById = familiesById;
 
@@ -79,6 +84,16 @@ class FamilyRepository {
   factory FamilyRepository.fromJsonString(String raw, {String clanKey = 'main'}) {
     final Map<String, dynamic> json = jsonDecode(raw) as Map<String, dynamic>;
 
+    // Optional top-level `crossRef` object: maps a person id of THIS clan to
+    // the same real person's identity in another clan, e.g.
+    // `"p16": {"clan": "jamalian", "id": "p420"}`.
+    final crossRefJson = json['crossRef'] as Map<String, dynamic>?;
+    final crossRefs = <String, CrossClanRef>{
+      if (crossRefJson != null)
+        for (final entry in crossRefJson.entries)
+          entry.key: CrossClanRef.fromJson(entry.value as Map<String, dynamic>),
+    };
+
     final peopleJson = json['people'] as List<dynamic>;
     final Map<String, Person> people = {
       for (final p in peopleJson)
@@ -98,6 +113,7 @@ class FamilyRepository {
       peopleById: people,
       familiesById: families,
       clanKey: clanKey,
+      crossRefs: crossRefs,
     );
   }
 
@@ -251,6 +267,10 @@ class FamilyRepository {
     ].join(' › ');
   }
 
+  /// If [personId] identifies the same real person in another clan
+  /// (cross-clan marriage), returns that identity; otherwise null.
+  CrossClanRef? crossRefFor(String personId) => crossRefs[personId];
+
   // ---- Search -----------------------------------------------------------
 
   /// Searches people by first name, last name, or full name (case- and
@@ -346,4 +366,20 @@ class FamilyRepository {
     'نبیره',
     'ندیده',
   ];
+}
+
+/// Identity of the same real person inside a different خاندان. Used for
+/// cross-clan marriages: e.g. نرگس جمالیان is `p423` in the جمالیان clan and
+/// `p98` in the main clan — tapping the name jumps to the other clan's
+/// family page.
+class CrossClanRef {
+  final String clan;
+  final String id;
+
+  const CrossClanRef({required this.clan, required this.id});
+
+  factory CrossClanRef.fromJson(Map<String, dynamic> json) => CrossClanRef(
+        clan: json['clan'] as String,
+        id: json['id'] as String,
+      );
 }

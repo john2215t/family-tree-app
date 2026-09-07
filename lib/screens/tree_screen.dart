@@ -4,6 +4,7 @@ import '../data/family_repository.dart';
 import '../models/person.dart';
 import '../models/relationship.dart';
 import '../theme/app_theme.dart';
+import '../widgets/clan_registry.dart';
 import '../widgets/status_dot.dart';
 import 'family_screen.dart';
 
@@ -379,11 +380,30 @@ class _CoupleNode extends StatelessWidget {
     final husband = _PersonAvatar(
       person: couple.husband,
       radius: 28,
-      onTap: () => _openFamily(context),
+      onTap: () {
+        final ref = repository.crossRefFor(couple.husband.id);
+        if (ref != null) {
+          openCrossClanFamily(context, ref);
+          return;
+        }
+        _openFamily(context);
+      },
     );
     final wife = couple.wife == null
         ? null
-        : _PersonAvatar(person: couple.wife!, radius: 28, onTap: () => _openFamily(context));
+        : _PersonAvatar(
+            person: couple.wife!,
+            radius: 28,
+            onTap: () {
+              // Cross-clan spouse: open her own clan's family page.
+              final ref = repository.crossRefFor(couple.wife!.id);
+              if (ref != null) {
+                openCrossClanFamily(context, ref);
+                return;
+              }
+              _openFamily(context);
+            },
+          );
 
     final node = wife == null
         ? husband
