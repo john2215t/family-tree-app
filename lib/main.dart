@@ -37,15 +37,35 @@ class FamilyTreeApp extends StatelessWidget {
   }
 }
 
+/// Everything the app needs loaded once at startup: the main clan plus any
+/// bundled side clans (خاندان‌های جانبی).
+class _AppData {
+  final FamilyRepository main;
+  final List<FamilyRepository> sideClans;
+  const _AppData({required this.main, required this.sideClans});
+}
+
 /// Loads the bundled family data once at startup and shows a small splash
 /// while doing so, before handing off to [HomeScreen].
 class _AppLoader extends StatelessWidget {
   const _AppLoader();
 
+  Future<_AppData> _load() async {
+    final main = await FamilyRepository.loadDefault();
+    List<FamilyRepository> sideClans = const [];
+    try {
+      sideClans = await FamilyRepository.loadSideClans();
+    } catch (_) {
+      // Side clans are optional — never block startup on them.
+      sideClans = const [];
+    }
+    return _AppData(main: main, sideClans: sideClans);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<FamilyRepository>(
-      future: FamilyRepository.loadDefault(),
+    return FutureBuilder<_AppData>(
+      future: _load(),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return const Scaffold(
@@ -65,7 +85,8 @@ class _AppLoader extends StatelessWidget {
             ),
           );
         }
-        return HomeScreen(repository: snapshot.data!);
+        final data = snapshot.data!;
+        return HomeScreen(repository: data.main, sideClans: data.sideClans);
       },
     );
   }

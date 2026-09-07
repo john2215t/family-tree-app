@@ -1,0 +1,555 @@
+{
+  "title": "خاندان جمالیان",
+  "rootFamilyId": "j1",
+  "people": [
+    {
+      "id": "p414",
+      "firstName": "محمد",
+      "lastName": "جمالیان",
+      "birthYear": null,
+      "status": "deceased",
+      "burialPlace": ""
+    },
+    {
+      "id": "p415",
+      "firstName": "رقیه",
+      "lastName": "",
+      "birthYear": null,
+      "status": "deceased",
+      "burialPlace": ""
+    },
+    {
+      "id": "p416",
+      "firstName": "محمد",
+      "lastName": "جمالیان",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p417",
+      "firstName": "ربابه",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p418",
+      "firstName": "علیرضا",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p419",
+      "firstName": "الهه",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p420",
+      "firstName": "زهرا",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p421",
+      "firstName": "خدیجه",
+      "lastName": "جمالیان",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p422",
+      "firstName": "عظیمی",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p423",
+      "firstName": "نرگس",
+      "lastName": "جمالیان",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p424",
+      "firstName": "عباس",
+      "lastName": "رفسنجانی",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p425",
+      "firstName": "مهدی",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p426",
+      "firstName": "فاطمه",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p427",
+      "firstName": "حاج‌فاطمه",
+      "lastName": "جمالیان",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p428",
+      "firstName": "تقی‌پور",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p429",
+      "firstName": "تقی",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p430",
+      "firstName": "محمد",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p431",
+      "firstName": "علی",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p432",
+      "firstName": "حمید",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p433",
+      "firstName": "حسین",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p434",
+      "firstName": "محمود",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p435",
+      "firstName": "اکبر",
+      "lastName": "جمالیان",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p436",
+      "firstName": "معصومه",
+      "lastName": "اکبری",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p437",
+      "firstName": "اصغر",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p438",
+      "firstName": "حاج‌محمد",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p439",
+      "firstName": "علی",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p440",
+      "firstName": "فرشته",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p441",
+      "firstName": "فهیمه",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p442",
+      "firstName": "فاطمه",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p443",
+      "firstName": "سکینه",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p444",
+      "firstName": "زهرا",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p445",
+      "firstName": "حسین",
+      "lastName": "جمالیان",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p446",
+      "firstName": "صدیقه",
+      "lastName": "محسنی",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p447",
+      "firstName": "مریم",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p448",
+      "firstName": "محبوبه",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p449",
+      "firstName": "احسان",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p450",
+      "firstName": "حسن",
+      "lastName": "جمالیان",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p451",
+      "firstName": "صدیقه",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p452",
+      "firstName": "ایمان",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p453",
+      "firstName": "زهره",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p454",
+      "firstName": "محمد",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p455",
+      "firstName": "محمود",
+      "lastName": "رفسنجانی",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p456",
+      "firstName": "عصمت",
+      "lastName": "رفسنجانی",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p457",
+      "firstName": "دختر یوسف",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p458",
+      "firstName": "زهرا",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p459",
+      "firstName": "حسین",
+      "lastName": "رفسنجانی",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p460",
+      "firstName": "فرزند حاج‌بی‌بی",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p461",
+      "firstName": "جواد",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p462",
+      "firstName": "سید",
+      "lastName": "شهر بابکی",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p463",
+      "firstName": "مهدی",
+      "lastName": "حسین‌عسکری",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p464",
+      "firstName": "کمیل",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    },
+    {
+      "id": "p465",
+      "firstName": "یاسین",
+      "lastName": "",
+      "birthYear": null,
+      "status": "alive",
+      "burialPlace": ""
+    }
+  ],
+  "families": {
+    "j1": {
+      "husbandId": "p414",
+      "wifeId": "p415",
+      "childrenIds": [
+        "p416",
+        "p421",
+        "p423",
+        "p427",
+        "p435",
+        "p445",
+        "p450"
+      ]
+    },
+    "j2": {
+      "husbandId": "p416",
+      "wifeId": "p417",
+      "childrenIds": [
+        "p418",
+        "p419",
+        "p420"
+      ]
+    },
+    "j3": {
+      "husbandId": "p455",
+      "wifeId": "p420",
+      "childrenIds": []
+    },
+    "j4": {
+      "husbandId": "p422",
+      "wifeId": "p421",
+      "childrenIds": []
+    },
+    "j5": {
+      "husbandId": "p424",
+      "wifeId": "p423",
+      "childrenIds": [
+        "p425",
+        "p426"
+      ]
+    },
+    "j6": {
+      "husbandId": "p428",
+      "wifeId": "p427",
+      "childrenIds": [
+        "p429",
+        "p430",
+        "p431",
+        "p432",
+        "p433",
+        "p434"
+      ]
+    },
+    "j7": {
+      "husbandId": "p435",
+      "wifeId": "p436",
+      "childrenIds": [
+        "p437",
+        "p438",
+        "p439",
+        "p440",
+        "p441",
+        "p442",
+        "p443",
+        "p444"
+      ]
+    },
+    "j8": {
+      "husbandId": "p437",
+      "wifeId": "p456",
+      "childrenIds": []
+    },
+    "j9": {
+      "husbandId": "p438",
+      "wifeId": "p457",
+      "childrenIds": []
+    },
+    "j10": {
+      "husbandId": "p459",
+      "wifeId": "p440",
+      "childrenIds": []
+    },
+    "j11": {
+      "husbandId": "p460",
+      "wifeId": "p441",
+      "childrenIds": []
+    },
+    "j12": {
+      "husbandId": "p461",
+      "wifeId": "p443",
+      "childrenIds": []
+    },
+    "j13": {
+      "husbandId": "p462",
+      "wifeId": "p444",
+      "childrenIds": []
+    },
+    "j14": {
+      "husbandId": "p445",
+      "wifeId": "p446",
+      "childrenIds": [
+        "p447",
+        "p448",
+        "p449"
+      ]
+    },
+    "j15": {
+      "husbandId": "p463",
+      "wifeId": "p447",
+      "childrenIds": [
+        "p464",
+        "p465"
+      ]
+    },
+    "j16": {
+      "husbandId": "p450",
+      "wifeId": "p451",
+      "childrenIds": [
+        "p452",
+        "p453"
+      ]
+    },
+    "j17": {
+      "husbandId": "p454",
+      "wifeId": "p419",
+      "childrenIds": []
+    },
+    "j18": {
+      "husbandId": "p439",
+      "wifeId": "p458",
+      "childrenIds": []
+    }
+  }
+}

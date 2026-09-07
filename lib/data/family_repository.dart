@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle, AssetManifest;
 
 import '../models/person.dart';
 import '../models/family.dart';
@@ -37,6 +38,30 @@ class FamilyRepository {
   static Future<FamilyRepository> loadDefault() async {
     final raw = await rootBundle.loadString('assets/data/family.json');
     return FamilyRepository.fromJsonString(raw);
+  }
+
+  /// Loads every side clan (خاندان جانبی) bundled under
+  /// `assets/data/side_clans/*.json`. Each file has the same schema as the
+  /// main clan data. Failures are skipped defensively so a malformed side
+  /// clan file never breaks the app.
+  static Future<List<FamilyRepository>> loadSideClans() async {
+    final manifest =
+        await AssetManifest.loadFromAssetBundle(rootBundle);
+    final paths = manifest
+        .listAssets()
+        .where((p) => p.startsWith('assets/data/side_clans/') && p.endsWith('.json'))
+        .toList()
+      ..sort();
+    final clans = <FamilyRepository>[];
+    for (final path in paths) {
+      try {
+        final raw = await rootBundle.loadString(path);
+        clans.add(FamilyRepository.fromJsonString(raw));
+      } catch (_) {
+        // Skip malformed side-clan files.
+      }
+    }
+    return clans;
   }
 
   /// Parses clan data from a raw JSON string. Split out from [loadDefault]

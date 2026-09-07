@@ -15,8 +15,13 @@ import 'person_screen.dart';
 /// filtered member list), and a placeholder for future side clans.
 class HomeScreen extends StatefulWidget {
   final FamilyRepository repository;
+  final List<FamilyRepository> sideClans;
 
-  const HomeScreen({super.key, required this.repository});
+  const HomeScreen({
+    super.key,
+    required this.repository,
+    this.sideClans = const [],
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -189,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 20),
               _ClanStats(repository: repo),
               const SizedBox(height: 20),
-              const _SideClansPlaceholder(),
+              _SideClansSection(sideClans: widget.sideClans),
             ],
           ],
         ),
@@ -338,10 +343,13 @@ class _StatRow extends StatelessWidget {
   }
 }
 
-/// Placeholder for future side clans («خاندان‌های جانبی») that will be
-/// added to the app later. Currently shows a disabled hint card.
-class _SideClansPlaceholder extends StatelessWidget {
-  const _SideClansPlaceholder();
+/// Side clans (خاندان‌های جانبی): tappable cards for each bundled side clan.
+/// Tapping a clan opens its family screen starting at the clan's root
+/// couple. If no side clans are bundled, a disabled hint is shown instead.
+class _SideClansSection extends StatelessWidget {
+  final List<FamilyRepository> sideClans;
+
+  const _SideClansSection({required this.sideClans});
 
   @override
   Widget build(BuildContext context) {
@@ -366,12 +374,61 @@ class _SideClansPlaceholder extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            Text(
-              'به‌زودی: شجره‌نامه‌های خاندان‌های دیگر (خویشاوندان سببی) به این بخش اضافه می‌شود.',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppTheme.textSecondary,
+            if (sideClans.isEmpty)
+              Text(
+                'به‌زودی: شجره‌نامه‌های خاندان‌های دیگر (خویشاوندان سببی) به این بخش اضافه می‌شود.',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppTheme.textSecondary,
+                    ),
+              )
+            else
+              for (final clan in sideClans) ...[
+                InkWell(
+                  borderRadius: BorderRadius.circular(14),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => FamilyScreen(
+                          repository: clan,
+                          path: [clan.rootFamilyId],
+                        ),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 4, vertical: 10),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.forest_rounded,
+                            size: 20, color: AppTheme.primary),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            clan.title,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall
+                                ?.copyWith(fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        Text(
+                          '${clan.totalPeopleCount} نفر',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(
+                                color: AppTheme.textSecondary,
+                              ),
+                        ),
+                        const SizedBox(width: 4),
+                        const Icon(Icons.chevron_left_rounded,
+                            size: 18, color: AppTheme.textSecondary),
+                      ],
+                    ),
                   ),
-            ),
+                ),
+              ],
           ],
         ),
       ),
