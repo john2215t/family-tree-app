@@ -47,6 +47,8 @@ class PersonListScreen extends StatelessWidget {
                   for (final person in sorted) ...[
                     PersonCard(
                       person: person,
+                      // Paternal lineage under the name in stat lists too.
+                      repository: repository,
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(

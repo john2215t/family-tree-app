@@ -17,10 +17,10 @@ class CoupleUnit {
     this.wife,
   });
 
-  /// Display label, e.g. "علی رضایی + سارا کریمی" or just "حسن رضایی"
+  /// Display label, e.g. "علی رضایی / سارا کریمی" or just "حسن رضایی"
   /// when there is no spouse.
   String get displayName =>
-      wife != null ? '${husband.fullName} + ${wife!.fullName}' : husband.fullName;
+      wife != null ? '${husband.fullName} / ${wife!.fullName}' : husband.fullName;
 }
 
 /// A fully-resolved bundle of everything relevant to a single [Person]:

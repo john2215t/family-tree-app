@@ -10,8 +10,9 @@ import 'status_dot.dart';
 /// have one) or their person-detail screen.
 ///
 /// Each partner's name carries their own status dot (green / black /
-/// gold). In the children list only first names are shown — the family
-/// name appears in the profile and search.
+/// gold). The child is shown by first name; the spouse's name is shown
+/// with their family name so in-law spouses are identifiable — per the
+/// requirement that spouses' last names appear in the children section.
 class FamilyCard extends StatelessWidget {
   final CoupleUnit couple;
   final VoidCallback onTap;
@@ -46,7 +47,7 @@ class FamilyCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Each partner's first name with their own status dot.
+                    // Child by first name, spouse by full name (with last name).
                     Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
@@ -63,13 +64,13 @@ class FamilyCard extends StatelessWidget {
                         if (couple.wife != null) ...[
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 6),
-                            child: Text('+',
+                            child: Text('/',
                                 style: TextStyle(fontWeight: FontWeight.w700)),
                           ),
                           NameWithStatus(
                             status: couple.wife!.status,
                             child: Text(
-                              couple.wife!.firstName,
+                              couple.wife!.fullName,
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium

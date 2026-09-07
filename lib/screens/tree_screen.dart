@@ -41,7 +41,7 @@ class TreeScreen extends StatelessWidget {
     final rootName = rootCouple == null
         ? 'نمای درختی'
         : rootCouple.wife != null
-            ? '${rootCouple.husband.firstName} + ${rootCouple.wife!.firstName}'
+            ? '${rootCouple.husband.firstName} / ${rootCouple.wife!.firstName}'
             : rootCouple.husband.firstName;
 
     return Scaffold(

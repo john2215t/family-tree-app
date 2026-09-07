@@ -114,6 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     for (final person in _results) ...[
                       PersonCard(
                         person: person,
+                        // Show the paternal lineage under each search hit.
+                        repository: repo,
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(

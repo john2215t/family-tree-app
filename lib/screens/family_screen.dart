@@ -186,7 +186,7 @@ class _CoupleHeader extends StatelessWidget {
             if (couple.wife != null) ...[
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Text('+', style: TextStyle(fontWeight: FontWeight.w700)),
+                child: Text('/', style: TextStyle(fontWeight: FontWeight.w700)),
               ),
               _NameLink(
                 label: couple.wife!.fullName,
