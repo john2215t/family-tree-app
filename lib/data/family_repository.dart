@@ -55,24 +55,44 @@ class FamilyRepository {
   /// main clan data. Failures are skipped defensively so a malformed side
   /// clan file never breaks the app.
   static Future<List<FamilyRepository>> loadSideClans() async {
-    final manifest =
-        await AssetManifest.loadFromAssetBundle(rootBundle);
-    final paths = manifest
-        .listAssets()
-        .where((p) => p.startsWith('assets/data/side_clans/') && p.endsWith('.json'))
-        .toList()
-      ..sort();
+    // Discover side-clan assets. AssetManifest is the general mechanism, but
+    // it can be unavailable/empty on some Flutter versions — fall back to a
+    // direct probe of the bundled side-clan files so the section never
+    // silently disappears.
+    List<String> paths = [];
+    try {
+      final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
+      paths = manifest
+          .listAssets()
+          .where((p) =>
+              p.startsWith('assets/data/side_clans/') && p.endsWith('.json'))
+          .toList()
+        ..sort();
+    } catch (_) {
+      paths = [];
+    }
+    if (paths.isEmpty) {
+      // Fallback: try well-known side-clan files directly.
+      const known = <String>['assets/data/side_clans/jamalian.json'];
+      for (final candidate in known) {
+        try {
+          await rootBundle.load(candidate);
+          paths.add(candidate);
+        } catch (_) {
+          // Not bundled — skip.
+        }
+      }
+      paths.sort();
+    }
     final clans = <FamilyRepository>[];
     for (final path in paths) {
       try {
         final raw = await rootBundle.loadString(path);
-        final stem = path
-            .split('/')
-            .last
-            .replaceAll('.json', '');
+        final stem = path.split('/').last.replaceAll('.json', '');
         clans.add(FamilyRepository.fromJsonString(raw, clanKey: stem));
-      } catch (_) {
+      } catch (e) {
         // Skip malformed side-clan files.
+        debugPrint('Skipping side clan $path: $e');
       }
     }
     return clans;
@@ -85,13 +105,16 @@ class FamilyRepository {
     final Map<String, dynamic> json = jsonDecode(raw) as Map<String, dynamic>;
 
     // Optional top-level `crossRef` object: maps a person id of THIS clan to
-    // the same real person's identity in another clan, e.g.
-    // `"p16": {"clan": "jamalian", "id": "p420"}`.
+    // the same real person's identity in another clan. Two accepted shapes:
+    //   main clan:   "p16": {"clan": "jamalian", "id": "p420"}
+    //   side clan:   "p420": "p16"            (target clan implied by owner)
     final crossRefJson = json['crossRef'] as Map<String, dynamic>?;
     final crossRefs = <String, CrossClanRef>{
       if (crossRefJson != null)
         for (final entry in crossRefJson.entries)
-          entry.key: CrossClanRef.fromJson(entry.value as Map<String, dynamic>),
+          entry.key: entry.value is Map<String, dynamic>
+              ? CrossClanRef.fromJson(entry.value as Map<String, dynamic>)
+              : CrossClanRef(clan: clanKey, id: entry.value as String),
     };
 
     final peopleJson = json['people'] as List<dynamic>;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import '../data/family_repository.dart';
 import '../models/person.dart';
@@ -21,7 +22,7 @@ import 'family_screen.dart';
 /// rooted at that person's own family instead — showing their personal
 /// subtree. Tapping any node jumps into the step-by-step view at that
 /// generation.
-class TreeScreen extends StatelessWidget {
+class TreeScreen extends StatefulWidget {
   final FamilyRepository repository;
   final String? rootPersonId;
 
@@ -30,6 +31,24 @@ class TreeScreen extends StatelessWidget {
     required this.repository,
     this.rootPersonId,
   });
+
+  @override
+  State<TreeScreen> createState() => _TreeScreenState();
+}
+
+class _TreeScreenState extends State<TreeScreen> {
+  final TransformationController _transform = TransformationController();
+  final GlobalKey _treeKey = GlobalKey();
+  final GlobalKey _viewportKey = GlobalKey();
+
+  FamilyRepository get repository => widget.repository;
+  String? get rootPersonId => widget.rootPersonId;
+
+  @override
+  void dispose() {
+    _transform.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,22 +75,77 @@ class TreeScreen extends StatelessWidget {
             : rootCouple.husband.firstName;
 
     return Scaffold(
-      appBar: AppBar(title: Text('شجره‌نامه $rootName')),
-      body: InteractiveViewer(
-        constrained: false,
-        boundaryMargin: const EdgeInsets.all(120),
-        minScale: 0.3,
-        maxScale: 2.5,
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: _FamilyBranch(
-            repository: repository,
-            familyId: rootFamilyId,
-            path: [rootFamilyId],
+      appBar: AppBar(
+        title: Text('شجره‌نامه $rootName'),
+        actions: [
+          IconButton(
+            tooltip: 'نمایش کل شجره در یک نما',
+            icon: const Icon(Icons.filter_center_focus_rounded),
+            onPressed: _fitAll,
           ),
-        ),
+        ],
+      ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          // One-shot auto-fit on first layout: scale the (very wide) tree so
+          // the whole shajire nomaye fits in view right away.
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!_didAutoFit && mounted) {
+              _didAutoFit = true;
+              _fitAll();
+            }
+          });
+          return InteractiveViewer(
+            key: _viewportKey,
+            constrained: false,
+            boundaryMargin: const EdgeInsets.all(4000),
+            minScale: 0.02,
+            maxScale: 2.5,
+            transformationController: _transform,
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _FamilyBranch(
+                    key: _treeKey,
+                    repository: repository,
+                    familyId: rootFamilyId,
+                    path: [rootFamilyId],
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
+  }
+
+  bool _didAutoFit = false;
+
+  /// Zooms out far enough that the whole tree fits the viewport.
+  void _fitAll() {
+    final box = _treeKey.currentContext?.findRenderObject() as RenderBox?;
+    final viewport =
+        _viewportKey.currentContext?.findRenderObject() as RenderBox?;
+    if (box == null || viewport == null || !box.hasSize || !viewport.hasSize) {
+      return;
+    }
+    final treeSize = box.size;
+    final viewSize = viewport.size;
+    if (treeSize.isEmpty || viewSize.isEmpty) return;
+    final fitScale = (viewSize.width / treeSize.width)
+        .clamp(0.02, 1.0)
+        .toDouble();
+    final centered = Matrix4.identity()
+      ..translate(
+        (viewSize.width - treeSize.width * fitScale) / 2,
+        16,
+      )
+      ..scale(fitScale);
+    _transform.value = centered;
   }
 }
 
@@ -88,6 +162,7 @@ class _FamilyBranch extends StatelessWidget {
   final List<String> path;
 
   const _FamilyBranch({
+    super.key,
     required this.repository,
     required this.familyId,
     required this.path,
