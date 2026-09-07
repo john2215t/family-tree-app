@@ -2909,7 +2909,7 @@
       "firstName": "یوسف",
       "lastName": "رفسنجانی",
       "birthYear": null,
-      "status": "alive",
+      "status": "deceased",
       "burialPlace": ""
     },
     {
@@ -2917,7 +2917,7 @@
       "firstName": "شهربانو",
       "lastName": "",
       "birthYear": null,
-      "status": "alive",
+      "status": "deceased",
       "burialPlace": ""
     },
     {
@@ -3034,7 +3034,7 @@
     },
     {
       "id": "p429",
-      "firstName": "سفر",
+      "firstName": "صفر",
       "lastName": "دهقان‌نژاد (علی‌مندل)",
       "birthYear": null,
       "status": "alive",
