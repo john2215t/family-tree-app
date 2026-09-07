@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'data/family_repository.dart';
 import 'screens/home_screen.dart';
 import 'theme/app_theme.dart';
+import 'widgets/clan_registry.dart';
 
 void main() {
   runApp(const FamilyTreeApp());
@@ -86,7 +87,13 @@ class _AppLoader extends StatelessWidget {
           );
         }
         final data = snapshot.data!;
-        return HomeScreen(repository: data.main, sideClans: data.sideClans);
+        return ClanRegistry(
+          clans: {
+            data.main.clanKey: data.main,
+            for (final clan in data.sideClans) clan.clanKey: clan,
+          },
+          child: HomeScreen(repository: data.main, sideClans: data.sideClans),
+        );
       },
     );
   }

@@ -120,6 +120,7 @@ class FamilyScreen extends StatelessWidget {
                     const SizedBox(height: 12),
                     for (final childCouple in children) ...[
                       FamilyCard(
+                        repository: repository,
                         couple: childCouple,
                         onTap: () => _onChildTap(context, childCouple),
                       ),
