@@ -455,7 +455,7 @@
       "firstName": "جلال",
       "lastName": "رفسنجانی",
       "birthYear": null,
-      "status": "alive",
+      "status": "martyr",
       "burialPlace": ""
     },
     {
@@ -2100,7 +2100,7 @@
     {
       "id": "p298",
       "firstName": "امین",
-      "lastName": "غلامرضا اسماعیل‌پور",
+      "lastName": "اسماعیل‌پور",
       "birthYear": null,
       "status": "alive"
     },
@@ -2114,7 +2114,7 @@
     {
       "id": "p300",
       "firstName": "الهام",
-      "lastName": "غلامرضا اسماعیل‌پور",
+      "lastName": "اسماعیل‌پور",
       "birthYear": null,
       "status": "alive"
     },
@@ -2135,7 +2135,7 @@
     {
       "id": "p303",
       "firstName": "محمدرضا",
-      "lastName": "غلامرضا اسماعیل‌پور",
+      "lastName": "اسماعیل‌پور",
       "birthYear": null,
       "status": "alive"
     },
@@ -2149,21 +2149,21 @@
     {
       "id": "p305",
       "firstName": "انیس",
-      "lastName": "غلامرضا اسماعیل‌پور",
+      "lastName": "اسماعیل‌پور",
       "birthYear": null,
       "status": "alive"
     },
     {
       "id": "p306",
       "firstName": "ایمان",
-      "lastName": "غلامرضا اسماعیل‌پور",
+      "lastName": "اسماعیل‌پور",
       "birthYear": null,
       "status": "alive"
     },
     {
       "id": "p307",
       "firstName": "حاجی",
-      "lastName": "غلامرضا اسماعیل‌پور",
+      "lastName": "اسماعیل‌پور",
       "birthYear": null,
       "status": "alive"
     },
@@ -2177,7 +2177,7 @@
     {
       "id": "p309",
       "firstName": "حمید",
-      "lastName": "غلامرضا اسماعیل‌پور",
+      "lastName": "اسماعیل‌پور",
       "birthYear": null,
       "status": "alive"
     },
@@ -2191,21 +2191,21 @@
     {
       "id": "p311",
       "firstName": "محدثه",
-      "lastName": "غلامرضا اسماعیل‌پور",
+      "lastName": "اسماعیل‌پور",
       "birthYear": null,
       "status": "alive"
     },
     {
       "id": "p312",
       "firstName": "امیرعباس",
-      "lastName": "غلامرضا اسماعیل‌پور",
+      "lastName": "اسماعیل‌پور",
       "birthYear": null,
       "status": "alive"
     },
     {
       "id": "p313",
       "firstName": "فاطمه",
-      "lastName": "غلامرضا اسماعیل‌پور",
+      "lastName": "اسماعیل‌پور",
       "birthYear": null,
       "status": "alive"
     },
@@ -2338,7 +2338,7 @@
     {
       "id": "p332",
       "firstName": "صدیقه",
-      "lastName": "غلامرضا اسماعیل‌پور",
+      "lastName": "اسماعیل‌پور",
       "birthYear": null,
       "status": "alive"
     },
@@ -2429,7 +2429,7 @@
     {
       "id": "p345",
       "firstName": "عصمت",
-      "lastName": "غلامرضا اسماعیل‌پور",
+      "lastName": "اسماعیل‌پور",
       "birthYear": null,
       "status": "alive"
     },
@@ -2548,7 +2548,7 @@
     {
       "id": "p362",
       "firstName": "معصومه",
-      "lastName": "غلامرضا اسماعیل‌پور",
+      "lastName": "اسماعیل‌پور",
       "birthYear": null,
       "status": "alive"
     },
@@ -2569,7 +2569,7 @@
     {
       "id": "p365",
       "firstName": "فرخنده",
-      "lastName": "غلامرضا اسماعیل‌پور",
+      "lastName": "اسماعیل‌پور",
       "birthYear": null,
       "status": "alive"
     },
@@ -2695,7 +2695,7 @@
     {
       "id": "p383",
       "firstName": "ربابه",
-      "lastName": "غلامرضا اسماعیل‌پور",
+      "lastName": "اسماعیل‌پور",
       "birthYear": null,
       "status": "alive"
     },
@@ -2716,7 +2716,7 @@
     {
       "id": "p386",
       "firstName": "حاج",
-      "lastName": "غلامرضا اسماعیل‌پور",
+      "lastName": "اسماعیل‌پور",
       "birthYear": null,
       "status": "alive"
     },
@@ -2862,7 +2862,7 @@
       "firstName": "شهید",
       "lastName": "اکبر",
       "birthYear": null,
-      "status": "alive",
+      "status": "martyr",
       "burialPlace": ""
     },
     {
@@ -3039,6 +3039,13 @@
       "birthYear": null,
       "status": "alive",
       "burialPlace": ""
+    },
+    {
+      "id": "p430",
+      "firstName": "زهرا",
+      "lastName": "رفسنجانی",
+      "birthYear": null,
+      "status": "alive"
     }
   ],
   "families": {
@@ -3184,7 +3191,7 @@
       "childrenIds": [
         "p63",
         "p64",
-        "p348"
+        "p430"
       ]
     },
     "f18": {
@@ -4040,24 +4047,6 @@
         "p427",
         "p428"
       ]
-    }
-  },
-  "crossRef": {
-    "p16": {
-      "clan": "jamalian",
-      "id": "p420"
-    },
-    "p98": {
-      "clan": "jamalian",
-      "id": "p423"
-    },
-    "p97": {
-      "clan": "jamalian",
-      "id": "p424"
-    },
-    "p15": {
-      "clan": "jamalian",
-      "id": "p455"
     }
   }
 }

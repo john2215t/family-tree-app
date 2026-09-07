@@ -12,7 +12,7 @@ import 'tree_screen.dart';
 
 /// Full-information screen for a single person: name, birth year, status,
 /// burial place, spouse, parents, children, paternal lineage (پدر،
-/// پدربزرگ، … تا سرسلسله), tappable descendant-generation counts, and —
+/// پدربزرگ, …), tappable descendant-generation counts, and —
 /// via the 🌳 app-bar action — the full tree view rooted at this person.
 class PersonScreen extends StatelessWidget {
   final FamilyRepository repository;
@@ -103,7 +103,7 @@ class PersonScreen extends StatelessWidget {
                 ],
               ),
             ),
-            // Paternal lineage: پدر › پدربزرگ › … › سرسلسله
+            // Paternal lineage: پدر › پدربزرگ › …
             if (lineageText.isNotEmpty) ...[
               const SizedBox(height: 24),
               _SectionTitle('سلسله پدری'),

@@ -120,9 +120,21 @@ class FamilyScreen extends StatelessWidget {
                     const SizedBox(height: 12),
                     for (final childCouple in children) ...[
                       FamilyCard(
-                        repository: repository,
                         couple: childCouple,
                         onTap: () => _onChildTap(context, childCouple),
+                        onOpenPerson: (id) {
+                          // Opening a spouse from the children list: show
+                          // their own detail screen in this clan. Cross-clan
+                          // navigation is disabled (clans are separate).
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => PersonScreen(
+                                repository: repository,
+                                personId: id,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                       const SizedBox(height: 10),
                     ],

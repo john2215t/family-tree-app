@@ -24,13 +24,9 @@ class FamilyRepository {
   final Map<String, Person> _peopleById;
   final Map<String, Family> _familiesById;
 
-  /// Short key identifying this clan in cross-clan references (e.g.
-  /// 'main' for the primary خاندان, or the side clan's file stem).
+  /// Short key identifying this clan (e.g. 'main' for the primary خاندان,
+  /// or the side clan's file stem).
   final String clanKey;
-
-  /// Maps a person id of this clan to the same person's identity in
-  /// another clan (see [CrossClanRef]).
-  final Map<String, CrossClanRef> crossRefs;
 
   FamilyRepository._({
     required this.title,
@@ -38,7 +34,6 @@ class FamilyRepository {
     required Map<String, Person> peopleById,
     required Map<String, Family> familiesById,
     this.clanKey = 'main',
-    this.crossRefs = const {},
   })  : _peopleById = peopleById,
         _familiesById = familiesById;
 
@@ -81,11 +76,6 @@ class FamilyRepository {
   /// Parses clan data from a raw JSON string. Split out from [loadDefault]
   /// so the parsing/query logic can be unit-tested without needing Flutter's
   /// asset bundle.
-  ///
-  /// An optional top-level `crossRef` object maps a person id of THIS clan
-  /// to the same real person's identity in another clan, e.g.
-  /// `"p423": {"clan": "main", "id": "p98"}` — used to jump between clans
-  /// when a spouse belongs to the other خاندان.
   factory FamilyRepository.fromJsonString(String raw, {String clanKey = 'main'}) {
     final Map<String, dynamic> json = jsonDecode(raw) as Map<String, dynamic>;
 
@@ -101,12 +91,6 @@ class FamilyRepository {
         entry.key: Family.fromJson(entry.key, entry.value as Map<String, dynamic>),
     };
 
-    final crossRefJson = json['crossRef'] as Map<String, dynamic>?;
-    final crossRefs = <String, CrossClanRef>{
-      if (crossRefJson != null)
-        for (final entry in crossRefJson.entries)
-          entry.key: CrossClanRef.fromJson(entry.value as Map<String, dynamic>),
-    };
 
     return FamilyRepository._(
       title: json['title'] as String,
@@ -114,7 +98,6 @@ class FamilyRepository {
       peopleById: people,
       familiesById: families,
       clanKey: clanKey,
-      crossRefs: crossRefs,
     );
   }
 
@@ -234,7 +217,7 @@ class FamilyRepository {
 
   /// Builds the paternal lineage chain of [personId]: the father, paternal
   /// grandfather, paternal great-grandfather, … up to the founding
-  /// ancestor (سرسلسله). Each entry is a [Person]; the chain is returned
+  /// ancestor. Each entry is a [Person]; the chain is returned
   /// nearest-first (پدر اول، بعد پدربزرگ، …). Empty for the founding
   /// ancestor himself.
   ///
@@ -258,23 +241,15 @@ class FamilyRepository {
   }
 
   /// One-line rendering of [paternalLineage], e.g.
-  /// «محمد رفسنجانی › علی رفسنجانی › یوسف رفسنجانی (سرسلسله)».
+  /// «محمد رفسنجانی › علی رفسنجانی › یوسف رفسنجانی».
   /// Returns an empty string for the founding ancestor.
   String paternalLineageText(String personId) {
     final chain = paternalLineage(personId);
     if (chain.isEmpty) return '';
-    final names = [
-      for (var i = 0; i < chain.length; i++)
-        i == chain.length - 1
-            ? '${chain[i].fullName} (سرسلسله)'
-            : chain[i].fullName,
-    ];
-    return names.join(' › ');
+    return [
+      for (final p in chain) p.fullName,
+    ].join(' › ');
   }
-
-  /// If [personId] identifies the same real person in another clan
-  /// (cross-clan marriage), returns that identity; otherwise null.
-  CrossClanRef? crossRefFor(String personId) => crossRefs[personId];
 
   // ---- Search -----------------------------------------------------------
 
@@ -371,20 +346,4 @@ class FamilyRepository {
     'نبیره',
     'ندیده',
   ];
-}
-
-/// Identity of the "same" person inside a different خاندان. Used for
-/// cross-clan marriages: e.g. نرگس جمالیان is `p423` in the جمالیان clan
-/// and `p98` in the main clan — both sides declare the link so the app can
-/// navigate between the clans seamlessly.
-class CrossClanRef {
-  final String clan;
-  final String id;
-
-  const CrossClanRef({required this.clan, required this.id});
-
-  factory CrossClanRef.fromJson(Map<String, dynamic> json) => CrossClanRef(
-        clan: json['clan'] as String,
-        id: json['id'] as String,
-      );
 }

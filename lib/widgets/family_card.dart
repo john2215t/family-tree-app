@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../data/family_repository.dart';
 import '../models/relationship.dart';
 import '../theme/app_theme.dart';
-import '../widgets/clan_registry.dart';
 import 'status_dot.dart';
 
 /// A tappable card used in the children list of the family screen.
@@ -16,19 +14,16 @@ import 'status_dot.dart';
 /// with their family name so in-law spouses are identifiable — per the
 /// requirement that spouses' last names appear in the children section.
 ///
-/// If the spouse is the same person recorded in another خاندان
-/// (cross-clan marriage), a small clan badge is shown and tapping the
-/// spouse opens their profile in their own clan.
 class FamilyCard extends StatelessWidget {
-  final FamilyRepository repository;
   final CoupleUnit couple;
   final VoidCallback onTap;
+  final void Function(String personId)? onOpenPerson;
 
   const FamilyCard({
     super.key,
-    required this.repository,
     required this.couple,
     required this.onTap,
+    this.onOpenPerson,
   });
 
   @override
@@ -77,8 +72,9 @@ class FamilyCard extends StatelessWidget {
                           ),
                           InkWell(
                             borderRadius: BorderRadius.circular(8),
-                            onTap: () => openPersonResolvingCrossRef(
-                                context, repository, couple.wife!.id),
+                            onTap: onOpenPerson == null
+                                ? null
+                                : () => onOpenPerson!(couple.wife!.id),
                             child: NameWithStatus(
                               status: couple.wife!.status,
                               child: Row(
@@ -92,16 +88,6 @@ class FamilyCard extends StatelessWidget {
                                         ?.copyWith(
                                             fontWeight: FontWeight.w700),
                                   ),
-                                  // Cross-clan spouse: badge showing the
-                                  // other خاندان they belong to.
-                                  if (repository
-                                          .crossRefFor(couple.wife!.id) !=
-                                      null) ...[
-                                    const SizedBox(width: 6),
-                                    Icon(Icons.forest_rounded,
-                                        size: 14,
-                                        color: AppTheme.textSecondary),
-                                  ],
                                 ],
                               ),
                             ),

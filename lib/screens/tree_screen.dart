@@ -180,8 +180,10 @@ class _ChildSubtree extends StatelessWidget {
   }
 }
 
-/// The horizontal connector above a row of children: a line spanning the row
-/// with vertical drops above each child.
+/// The horizontal connector above a row of children: a continuous dark line
+/// running at the drop-line mid-height across the full row, with each
+/// child's branch hanging below it — so parent, rail and drops are one
+/// unbroken path.
 class _ChildrenRail extends StatelessWidget {
   final List<Widget> branches;
 
@@ -189,17 +191,22 @@ class _ChildrenRail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (branches.length == 1) {
-      return branches.first;
-    }
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    // The drop-line is 18 tall; the rail runs through its middle (y = 9).
+    return Stack(
+      clipBehavior: Clip.none,
       children: [
-        for (var i = 0; i < branches.length; i++) ...[
-          if (i > 0) const _RailSpan(),
-          branches[i],
-        ],
+        // Continuous horizontal rail behind the branches.
+        Positioned(
+          top: 8,
+          left: 0,
+          right: 0,
+          child: Container(height: 2, color: const Color(0xFF37474F)),
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: branches,
+        ),
       ],
     );
   }
@@ -216,7 +223,7 @@ class _Stem extends StatelessWidget {
     return Container(
       width: 2,
       height: height,
-      color: Colors.white.withOpacity(0.9),
+      color: const Color(0xFF37474F),
     );
   }
 }
@@ -231,25 +238,7 @@ class _DropLine extends StatelessWidget {
     return Container(
       width: 2,
       height: 18,
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9),
-        borderRadius: BorderRadius.circular(2),
-      ),
-    );
-  }
-}
-
-/// Short horizontal piece between adjacent children's drop lines.
-class _RailSpan extends StatelessWidget {
-  const _RailSpan();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 20,
-      height: 2,
-      margin: const EdgeInsets.only(top: 17),
-      color: Colors.white.withOpacity(0.9),
+      color: const Color(0xFF37474F),
     );
   }
 }
@@ -432,7 +421,7 @@ class _CoupleLink extends StatelessWidget {
         Container(
           width: 26,
           height: 2,
-          color: Colors.white.withOpacity(0.9),
+          color: const Color(0xFF37474F),
         ),
         const SizedBox(height: 2),
         Text(
