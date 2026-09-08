@@ -30,7 +30,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _searchController = TextEditingController();
-  List<Person> _results = const [];
+  List<_SearchHit> _results = const [];
 
   @override
   void dispose() {
@@ -40,7 +40,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _onSearchChanged(String query) {
     setState(() {
-      _results = widget.repository.searchPeople(query);
+      final q = query.trim();
+      if (q.isEmpty) {
+        _results = const [];
+        return;
+      }
+      // Search the main clan plus every side clan; each hit remembers the
+      // clan it belongs to so the tap opens the right repository.
+      final hits = <_SearchHit>[
+        for (final p in widget.repository.searchPeople(q))
+          _SearchHit(person: p, repository: widget.repository),
+        for (final clan in widget.sideClans)
+          for (final p in clan.searchPeople(q)) _SearchHit(person: p, repository: clan),
+      ]..sort((a, b) => a.person.fullName.compareTo(b.person.fullName));
+      _results = hits;
     });
   }
 
@@ -117,13 +130,14 @@ class _HomeScreenState extends State<HomeScreen> {
               else
                 Column(
                   children: [
-                    for (final person in _results) ...[
+                    for (final hit in _results) ...[
                       PersonCard(
-                        person: person,
+                        person: hit.person,
                         // Show the paternal lineage under each search hit.
-                        repository: repo,
+                        repository: hit.repository,
                         onTap: () {
-                          final ref = repo.crossRefFor(person.id);
+                          final hitRepo = hit.repository;
+                          final ref = hitRepo.crossRefFor(hit.person.id);
                           if (ref != null) {
                             openCrossClanFamily(context, ref);
                             return;
@@ -131,8 +145,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => PersonScreen(
-                                repository: repo,
-                                personId: person.id,
+                                repository: hitRepo,
+                                personId: hit.person.id,
                               ),
                             ),
                           );
@@ -440,4 +454,13 @@ class _SideClansSection extends StatelessWidget {
       ),
     );
   }
+}
+
+/// A search result paired with the clan (repository) the person belongs to —
+/// searching spans the main clan and all side clans.
+class _SearchHit {
+  final Person person;
+  final FamilyRepository repository;
+
+  const _SearchHit({required this.person, required this.repository});
 }
