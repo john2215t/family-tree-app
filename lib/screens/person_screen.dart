@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../data/family_repository.dart';
 import '../widgets/clan_registry.dart';
 import '../models/person.dart';
+import '../models/relationship.dart';
 import '../theme/app_theme.dart';
 import '../widgets/person_card.dart';
 import '../widgets/status_dot.dart';
