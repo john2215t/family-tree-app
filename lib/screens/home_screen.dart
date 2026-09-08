@@ -138,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => PersonScreen(
-                                repository: hitRepo,
+                                repository: hit.repository,
                                 personId: hit.person.id,
                               ),
                             ),
