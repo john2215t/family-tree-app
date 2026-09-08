@@ -10,6 +10,33 @@ void main() {
   runApp(const FamilyTreeApp());
 }
 
+/// Everything the app needs loaded once at startup: the main clan plus any
+/// bundled side clans (خاندان‌های جانبی).
+class _AppData {
+  final FamilyRepository main;
+  final List<FamilyRepository> sideClans;
+  const _AppData({required this.main, required this.sideClans});
+}
+
+/// Shared one-shot loader: both the clan gate (for the registry) and the
+/// home loader read the same future, so assets are parsed only once.
+Future<_AppData>? _appDataFuture;
+
+Future<_AppData> loadAppData() =>
+    _appDataFuture ??= _loadAppData();
+
+Future<_AppData> _loadAppData() async {
+  final main = await FamilyRepository.loadDefault();
+  List<FamilyRepository> sideClans = const [];
+  try {
+    sideClans = await FamilyRepository.loadSideClans();
+  } catch (_) {
+    // Side clans are optional — never block startup on them.
+    sideClans = const [];
+  }
+  return _AppData(main: main, sideClans: sideClans);
+}
+
 class FamilyTreeApp extends StatelessWidget {
   const FamilyTreeApp({super.key});
 
@@ -27,81 +54,39 @@ class FamilyTreeApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [Locale('fa', 'IR')],
-      // builder wraps the NAVIGATOR itself, so ClanRegistry (provided by
-      // _ClanGate once data is loaded) sits ABOVE every pushed route —
-      // pushed screens can always resolve cross-clan references.
+      // builder wraps the NAVIGATOR itself, so once the clan data is loaded
+      // the [ClanRegistry] sits ABOVE every pushed route — any screen can
+      // resolve cross-clan references. The navigator subtree itself is never
+      // replaced (that would hang the splash); its `home` (_AppLoader) swaps
+      // to HomeScreen in place when loading finishes.
       builder: (context, child) {
         return Directionality(
           textDirection: TextDirection.rtl,
           child: _ClanGate(navigator: child),
         );
       },
-      home: const _Splash(),
+      home: const _AppLoader(),
     );
   }
 }
 
-/// Splash shown as the initial route while clans load.
-class _Splash extends StatelessWidget {
-  const _Splash();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: CircularProgressIndicator()),
-    );
-  }
-}
-
-/// Everything the app needs loaded once at startup: the main clan plus any
-/// bundled side clans (خاندان‌های جانبی).
-class _AppData {
-  final FamilyRepository main;
-  final List<FamilyRepository> sideClans;
-  const _AppData({required this.main, required this.sideClans});
-}
-
-/// Loads the main + side clans once, then provides them via [ClanRegistry]
-/// ABOVE the navigator (so every pushed route can resolve cross-clan refs)
-/// and swaps the splash for the real [HomeScreen].
-class _ClanGate extends StatefulWidget {
-  final Widget? navigator;
-
-  const _ClanGate({this.navigator});
-
-  @override
-  State<_ClanGate> createState() => _ClanGateState();
-}
-
-class _ClanGateState extends State<_ClanGate> {
-  late Future<_AppData> _future;
-  bool _replaced = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _future = _load();
-  }
-
-  Future<_AppData> _load() async {
-    final main = await FamilyRepository.loadDefault();
-    List<FamilyRepository> sideClans = const [];
-    try {
-      sideClans = await FamilyRepository.loadSideClans();
-    } catch (_) {
-      // Side clans are optional — never block startup on them.
-      sideClans = const [];
-    }
-    return _AppData(main: main, sideClans: sideClans);
-  }
+/// The navigator's initial route: shows a splash until the data is loaded,
+/// then renders [HomeScreen] in place (no navigator surgery — this is why
+/// previous versions worked reliably).
+class _AppLoader extends StatelessWidget {
+  const _AppLoader();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<_AppData>(
-      future: _future,
+      future: loadAppData(),
       builder: (context, snapshot) {
-        final nav = widget.navigator;
-        if (snapshot.hasError) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+        if (snapshot.hasError || !snapshot.hasData) {
           return Scaffold(
             body: Center(
               child: Padding(
@@ -114,28 +99,35 @@ class _ClanGateState extends State<_ClanGate> {
             ),
           );
         }
+        final data = snapshot.data!;
+        return HomeScreen(repository: data.main, sideClans: data.sideClans);
+      },
+    );
+  }
+}
+
+/// Sits ABOVE the navigator (via MaterialApp.builder). While loading it just
+/// passes the navigator through; once loaded it wraps it in [ClanRegistry]
+/// so every route — including pushed ones — can resolve cross-clan refs.
+class _ClanGate extends StatelessWidget {
+  final Widget? navigator;
+
+  const _ClanGate({this.navigator});
+
+  @override
+  Widget build(BuildContext context) {
+    final nav = navigator;
+    if (nav == null) return const SizedBox.shrink();
+    return FutureBuilder<_AppData>(
+      future: loadAppData(),
+      builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done ||
-            !snapshot.hasData ||
-            nav == null) {
-          // Before data arrives there is no registry yet — the navigator
-          // shows the splash route anyway.
-          return nav ?? const _Splash();
+            !snapshot.hasData) {
+          // Not ready yet: pass the navigator through unchanged (its home
+          // shows the splash).
+          return nav;
         }
         final data = snapshot.data!;
-        // Swap the splash for the real home exactly once.
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!_replaced && mounted) {
-            _replaced = true;
-            Navigator.of(context, rootNavigator: true).pushReplacement(
-              MaterialPageRoute(
-                builder: (_) => HomeScreen(
-                  repository: data.main,
-                  sideClans: data.sideClans,
-                ),
-              ),
-            );
-          }
-        });
         return ClanRegistry(
           clans: {
             data.main.clanKey: data.main,
