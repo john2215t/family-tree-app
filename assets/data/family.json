@@ -3041,8 +3041,8 @@
       ]
     },
     "f7": {
-      "husbandId": "p23",
-      "wifeId": "p24",
+      "husbandId": "p24",
+      "wifeId": "p23",
       "childrenIds": [
         "p25",
         "p26"
@@ -3990,6 +3990,10 @@
     "p15": {
       "clan": "jamalian",
       "id": "p455"
+    },
+    "p24": {
+      "clan": "jamalian",
+      "id": "p418"
     }
   }
 }
