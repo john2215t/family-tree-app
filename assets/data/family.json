@@ -410,7 +410,7 @@
     },
     {
       "id": "p59",
-      "firstName": "یاسنا",
+      "firstName": "یسنا",
       "lastName": "زعیم‌زاده",
       "birthYear": 1388,
       "status": "alive"
@@ -1688,13 +1688,6 @@
       "status": "alive"
     },
     {
-      "id": "p241",
-      "firstName": "سکینه",
-      "lastName": "",
-      "birthYear": null,
-      "status": "alive"
-    },
-    {
       "id": "p242",
       "firstName": "زهرا",
       "lastName": "رفسنجانی",
@@ -2441,20 +2434,6 @@
       "status": "alive"
     },
     {
-      "id": "p347",
-      "firstName": "مصطفی",
-      "lastName": "عظیمی",
-      "birthYear": null,
-      "status": "alive"
-    },
-    {
-      "id": "p348",
-      "firstName": "زهرا",
-      "lastName": "رفسنجانی",
-      "birthYear": null,
-      "status": "alive"
-    },
-    {
       "id": "p349",
       "firstName": "نجمه",
       "lastName": "عظیمی",
@@ -2672,27 +2651,6 @@
       "status": "alive"
     },
     {
-      "id": "p380",
-      "firstName": "اعظم",
-      "lastName": "خواجه‌بیگی",
-      "birthYear": null,
-      "status": "alive"
-    },
-    {
-      "id": "p381",
-      "firstName": "حسین",
-      "lastName": "رفسنجانی",
-      "birthYear": null,
-      "status": "alive"
-    },
-    {
-      "id": "p382",
-      "firstName": "علی",
-      "lastName": "رفسنجانی",
-      "birthYear": null,
-      "status": "alive"
-    },
-    {
       "id": "p383",
       "firstName": "ربابه",
       "lastName": "اسماعیل‌پور",
@@ -2717,20 +2675,6 @@
       "id": "p386",
       "firstName": "حاج",
       "lastName": "اسماعیل‌پور",
-      "birthYear": null,
-      "status": "alive"
-    },
-    {
-      "id": "p387",
-      "firstName": "حاج",
-      "lastName": "محمد",
-      "birthYear": null,
-      "status": "alive"
-    },
-    {
-      "id": "p388",
-      "firstName": "صدیقه",
-      "lastName": "رفسنجانی",
       "birthYear": null,
       "status": "alive"
     },
@@ -3623,11 +3567,10 @@
         "p204",
         "p213",
         "p240",
-        "p241",
+        "p66",
         "p226",
         "p231",
-        "p242",
-        "p66"
+        "p242"
       ]
     },
     "f70": {
@@ -3833,11 +3776,6 @@
         "p343"
       ]
     },
-    "f93": {
-      "husbandId": "p347",
-      "wifeId": "p348",
-      "childrenIds": []
-    },
     "f94": {
       "husbandId": "p349",
       "wifeId": "p350",
@@ -3854,10 +3792,10 @@
       "childrenIds": []
     },
     "f97": {
-      "husbandId": "p355",
-      "wifeId": "p356",
+      "husbandId": "p356",
+      "wifeId": "p355",
       "childrenIds": [
-        "p347",
+        "p76",
         "p349",
         "p351",
         "p353",
@@ -3910,20 +3848,13 @@
         "p379"
       ]
     },
-    "f104": {
-      "husbandId": "p380",
-      "wifeId": "p381",
-      "childrenIds": [
-        "p382"
-      ]
-    },
     "f105": {
       "husbandId": "p383",
       "wifeId": "p384",
       "childrenIds": [
         "p372",
         "p376",
-        "p380"
+        "p54"
       ]
     },
     "f106": {
@@ -3940,11 +3871,6 @@
         "p365",
         "p383"
       ]
-    },
-    "f107": {
-      "husbandId": "p387",
-      "wifeId": "p388",
-      "childrenIds": []
     },
     "f108": {
       "husbandId": "p389",
@@ -3981,15 +3907,14 @@
       "wifeId": "p402",
       "childrenIds": [
         "p403",
-        "p387",
+        "p188",
         "p389",
         "p391",
         "p393",
         "p395",
         "p397",
         "p399",
-        "p385",
-        "p188"
+        "p385"
       ]
     },
     "f115": {

@@ -27,7 +27,17 @@ class PersonScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final relations = repository.relationsFor(personId);
+    final PersonRelations relations;
+    try {
+      relations = repository.relationsFor(personId);
+    } on ArgumentError {
+      // Unknown id (e.g. stale cross-clan link): show a friendly empty profile
+      // instead of crashing the whole screen.
+      return Scaffold(
+        appBar: AppBar(title: const Text('اطلاعات فرد')),
+        body: const Center(child: Text('پروفایلی برای این فرد یافت نشد.')),
+      );
+    }
     final person = relations.person;
     final lineageText = repository.paternalLineageText(personId);
     final genCounts = _ownFamilyGenerationCounts(personId);

@@ -114,7 +114,8 @@ class FamilyRepository {
         for (final entry in crossRefJson.entries)
           entry.key: entry.value is Map<String, dynamic>
               ? CrossClanRef.fromJson(entry.value as Map<String, dynamic>)
-              : CrossClanRef(clan: clanKey, id: entry.value as String),
+              // String form (side clans): the target is the main clan.
+              : CrossClanRef(clan: 'main', id: entry.value as String),
     };
 
     final peopleJson = json['people'] as List<dynamic>;
@@ -336,22 +337,8 @@ class FamilyRepository {
   /// count of 0, and traversal stops naturally since later generations
   /// will also be empty.
   List<int> descendantGenerationCounts(String familyId) {
-    const generationLabels = 5;
-    final counts = List<int>.filled(generationLabels, 0);
-    List<Person> currentGeneration = childrenOf(familyId);
-    for (var gen = 0; gen < generationLabels; gen++) {
-      counts[gen] = currentGeneration.length;
-      if (currentGeneration.isEmpty) break;
-      final nextGeneration = <Person>[];
-      for (final person in currentGeneration) {
-        final ownFamily = findOwnFamily(person.id);
-        if (ownFamily != null) {
-          nextGeneration.addAll(childrenOf(ownFamily.id));
-        }
-      }
-      currentGeneration = nextGeneration;
-    }
-    return counts;
+    final generations = descendantGenerationPeople(familyId);
+    return [for (final g in generations) g.length];
   }
 
   /// Returns the people of each descendant generation of [familyId] as
@@ -363,7 +350,10 @@ class FamilyRepository {
     const generationLabels = 5;
     final generations = List<List<Person>>.generate(
         generationLabels, (_) => <Person>[], growable: false);
-    List<Person> currentGeneration = childrenOf(familyId);
+    final seenIds = <String>{};
+    List<Person> currentGeneration = childrenOf(familyId)
+        .where((p) => seenIds.add(p.id))
+        .toList();
     for (var gen = 0; gen < generationLabels; gen++) {
       generations[gen] = List.of(currentGeneration);
       if (currentGeneration.isEmpty) break;
@@ -371,7 +361,14 @@ class FamilyRepository {
       for (final person in currentGeneration) {
         final ownFamily = findOwnFamily(person.id);
         if (ownFamily != null) {
-          nextGeneration.addAll(childrenOf(ownFamily.id));
+          for (final child in childrenOf(ownFamily.id)) {
+            // Each person appears in exactly ONE generation — the first
+            // time they are reached. Guards against double-listing in
+            // نبیره/ندیده when data has alternate paths.
+            if (seenIds.add(child.id)) {
+              nextGeneration.add(child);
+            }
+          }
         }
       }
       currentGeneration = nextGeneration;
