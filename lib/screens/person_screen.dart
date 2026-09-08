@@ -208,6 +208,17 @@ class PersonScreen extends StatelessWidget {
                 icon: const Icon(Icons.north_east_rounded, size: 18),
                 label: const Text('مشاهده در خانواده اصلی'),
               ),
+              const SizedBox(height: 10),
+            ],
+            // Same real person recorded in the OTHER خاندان (cross-clan
+            // marriage): jump from this profile to that clan's family page.
+            if (repository.crossRefFor(personId) != null) ...[
+              OutlinedButton.icon(
+                onPressed: () =>
+                    openCrossClanFamily(context, repository.crossRefFor(personId)!),
+                icon: const Icon(Icons.forest_rounded, size: 18),
+                label: const Text('مشاهده در خاندان مقابل'),
+              ),
               const SizedBox(height: 22),
             ],
             if (relations.children.isNotEmpty) ...[
@@ -237,12 +248,6 @@ class PersonScreen extends StatelessWidget {
   }
 
   void _openPerson(BuildContext context, String id) {
-    // Cross-clan spouse: open the other clan's family page.
-    final ref = repository.crossRefFor(id);
-    if (ref != null) {
-      openCrossClanFamily(context, ref);
-      return;
-    }
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => PersonScreen(repository: repository, personId: id),

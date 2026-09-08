@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../data/family_repository.dart';
 import '../models/relationship.dart';
 import '../theme/app_theme.dart';
-import '../widgets/clan_registry.dart';
 import 'status_dot.dart';
 
 /// A tappable card used in the children list of the family screen.
@@ -76,17 +75,9 @@ class FamilyCard extends StatelessWidget {
                           ),
                           InkWell(
                             borderRadius: BorderRadius.circular(8),
-                            onTap: () {
-                              final ref =
-                                  repository.crossRefFor(couple.wife!.id);
-                              if (ref != null) {
-                                // Same real person in another خاندان: jump
-                                // to that clan's family page.
-                                openCrossClanFamily(context, ref);
-                              } else if (onOpenPerson != null) {
-                                onOpenPerson!(couple.wife!.id);
-                              }
-                            },
+                            onTap: onOpenPerson == null
+                                ? null
+                                : () => onOpenPerson!(couple.wife!.id),
                             child: NameWithStatus(
                               status: couple.wife!.status,
                               child: Row(
@@ -100,14 +91,6 @@ class FamilyCard extends StatelessWidget {
                                         ?.copyWith(
                                             fontWeight: FontWeight.w700),
                                   ),
-                                  if (repository
-                                          .crossRefFor(couple.wife!.id) !=
-                                      null) ...[
-                                    const SizedBox(width: 6),
-                                    const Icon(Icons.forest_rounded,
-                                        size: 14,
-                                        color: AppTheme.textSecondary),
-                                  ],
                                 ],
                               ),
                             ),
